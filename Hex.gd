@@ -11,7 +11,8 @@ const COS_60 = SIN_30
 const COS_90 = SIN_0
 
 var vertices;
-var color = Color.transparent
+var color = Color("4d4d4d")
+var draw_enabled = true
 
 
 func _ready():
@@ -27,14 +28,25 @@ func _ready():
 	$Collision.polygon = vertices
 
 func _draw():
-	draw_polygon(vertices, PoolColorArray([color]))
-	draw_polyline(vertices, Color.black)
-	draw_line(vertices[vertices.size() - 1], vertices[0], Color.black)
+	if draw_enabled:
+		draw_polygon(vertices, PoolColorArray([color]))
+		draw_polyline(vertices, Color.black)
+		draw_line(vertices[vertices.size() - 1], vertices[0], Color.black)
 
 func _input_event(viewport, event, shape_idx):
 	if Input.is_action_pressed("draw") and color != Color.green:
 		color = Color.green
+		enable_draw()
 		update()
-	elif Input.is_action_pressed("erase") and color != Color.transparent:
-		color = Color.transparent
+	elif Input.is_action_pressed("erase") and color != Color("4d4d4d"):
+		color = Color("4d4d4d")
+		enable_draw()
 		update()
+
+func disable_draw():
+	draw_enabled = false
+	update()
+
+func enable_draw():
+	draw_enabled = true
+	update()
